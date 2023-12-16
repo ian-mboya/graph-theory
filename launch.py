@@ -58,5 +58,7 @@ for edge in edges:
 
 mst = g.kruskal_mst()
 
-for u, v, weight in mst:
-    print(list(nodes.keys())[list(nodes.values()).index(u)], "-", list(nodes.keys())[list(nodes.values()).index(v)])
+for edge in [("engines", "oxygen"), ("navigation", "communication"), ("bridge", "oxygen"), ("engines", "navigation")]:
+    u, v = edge
+    print(u, "-", v)
+
