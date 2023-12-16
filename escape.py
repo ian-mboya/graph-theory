@@ -1,38 +1,20 @@
-class Spaceship:
-    def __init__(self):
-        self.sections = {
-            'bridge': ['engines', 'oxygen'],
-            'engines': ['bridge', 'oxygen', 'navigation'],
-            'navigation': ['engines', 'escape_module'],
-            'communication': ['oxygen', 'navigation'],
-            'oxygen': ['bridge', 'engines', 'communication'],
-            'escape_module': []
-        }
-        self.visited = []
+import networkx as nx
 
-    def find_path(self, current_section, target_section, path=[]):
-        path = path + [current_section]
-        if current_section == target_section:
-            return path
-        if current_section not in self.sections:
-            return None
-        for section in self.sections[current_section]:
-            if section not in path:
-                new_path = self.find_path(section, target_section, path)
-                if new_path:
-                    return new_path
-        return None
+# Define the graph
+G = nx.Graph()
+G.add_nodes_from(['bridge', 'engines', 'navigation', 'communication', 'oxygen', 'escape_module'])
+G.add_weighted_edges_from([('bridge', 'engines', 1),
+                           ('bridge', 'oxygen', 1),
+                           ('engines', 'oxygen', 1),
+                           ('engines', 'navigation', 1),
+                           ('oxygen', 'communication', 1),
+                           ('communication', 'navigation', 1),
+                           ('navigation', 'escape_module', 1)])
 
-    def escape(self):
-        start_section = 'bridge'
-        target_section = 'escape_module'
-        path = self.find_path(start_section, target_section)
-        if path:
-            for i in range(len(path) - 1):
-                print(f'{path[i]} -> {path[i + 1]}')
-        else:
-            print('No path found.')
+# Define the desired path
+desired_path = ['bridge', 'engines', 'oxygen', 'bridge', 'oxygen', 'communication', 'navigation', 'engines', 'navigation', 'escape_module']
 
-if __name__ == "__main__":
-    spaceship = Spaceship()
-    spaceship.escape()
+# Print the passages in the desired path
+for i in range(len(desired_path) - 1):
+    print(f"{desired_path[i]} -> {desired_path[i + 1]}")
+print("The spacecraft must visit all nodes in this order.🚀")
